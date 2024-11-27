@@ -1,0 +1,11 @@
+.idea/
+env/
+tests/WMM2025_FINAL_TEST_VALUES_HIGHPREC.txt
+tests/__pycache__/
+tests/diff_results.csv
+tests/results/
+tests/results_err/
+wmm.egg-info/
+wmmhr.egg-info/
+wmmhr/__pycache__/
+
