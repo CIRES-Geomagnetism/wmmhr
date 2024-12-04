@@ -1,6 +1,6 @@
 from .build import wmmhr_calc
-from .uncertainty import uncertainty
 
-_all__ = ['wmmhr_calc', 'uncertainty']
+
+_all__ = ['wmmhr_calc']
 
 __version__ = "1.1.2"

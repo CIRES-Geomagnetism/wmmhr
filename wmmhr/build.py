@@ -2,6 +2,7 @@ from typing import Optional
 import os
 
 from wmm import wmm_calc
+from wmmhr import uncertainty
 
 class wmmhr_calc(wmm_calc):
 
@@ -10,7 +11,10 @@ class wmmhr_calc(wmm_calc):
 
         super().__init__()
         self.nmax = 133
+        self.max_sv = 15
         self.coef_file = "WMMHR.cof"
+        self.err_vals = uncertainty.err_models
+
 
     def get_coefs_path(self, filename: str) -> str:
         """
@@ -34,6 +38,10 @@ class wmmhr_calc(wmm_calc):
 
         if lon > 360.0 or lon < -180.0:
             raise ValueError("lontitude should between -180 to 180")
+
+
+
+
 
 
 

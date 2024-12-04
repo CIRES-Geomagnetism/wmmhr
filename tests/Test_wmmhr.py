@@ -244,11 +244,21 @@ class MyTestCase(unittest.TestCase):
 
         print(x)
 
-    def test_uncertainty(self):
+    def test_coef_load(self):
+
+        model = wmmhr_calc()
+        model.setup_time(dyear=2025.5)
+        for lat in range(-90, 91):
+            for lon in range(-180, 180):
+
+                model.setup_env(lat, lon, 0)
+                model.get_all()
 
 
 
-        print(wmmhr.uncertainty)
+
+
+
 
 
 

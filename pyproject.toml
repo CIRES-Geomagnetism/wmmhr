@@ -16,7 +16,8 @@ classifiers = [
 dependencies = [
     "numpy",
     "geomaglib",  # Git dependency
-    "wmm"
+    #"wmm"
+    "wmm @ git+https://github.com/CIRES-Geomagnetism/wmm.git@main"
 ]
 readme = "README.md"
 
