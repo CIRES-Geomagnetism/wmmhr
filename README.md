@@ -63,14 +63,14 @@ print(wmmhr.uncertainty)
 
 ## WMMHR Python API Reference
 
-### Set up the environment for the WMMHR model
+### Set up the time and environment for the WMMHR model
 
 #### Set up time 
 
 **setup_time(year**=None, **month**=None, **day**=None, **dyear** = None)
 
 If users don't call or assign any value to setup_time(), the current time will be used to compute the model.
-Either by providing year, month, day
+Either by providing year, month, day or decimal year.
 ```python
 from wmmhr import wmmhr_calc
 model = wmmhr_calc()
@@ -98,7 +98,7 @@ The default unit and type of altitude is km and mean sea level.
 Assign the parameter for unit and msl, if the latitude is not in km or ellipsoid height.
 "m" for meter and "feet" for feet. For example,
 ```
-model.setup_env(lat, lon, alt, unit="m", msl=False)
+model.setup_env(lat, lon, alt, unit="m", msl=True)
 ```
 
 #### Get the geomagnetic elements

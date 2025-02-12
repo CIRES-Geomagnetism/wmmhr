@@ -9,3 +9,5 @@ wmm.egg-info/
 wmmhr.egg-info/
 wmmhr/__pycache__/
 
+dist
+
