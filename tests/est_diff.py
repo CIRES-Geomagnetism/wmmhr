@@ -2,7 +2,7 @@ import os
 from typing import TextIO
 
 
-def estimate(file_path: str, out_fp: TextIO, mag_comp: str):
+def estimate(file_path: str, out_fp: TextIO, mag_comp: str, tol: float):
 
     count = -1
     diff_sum = 0
@@ -18,7 +18,11 @@ def estimate(file_path: str, out_fp: TextIO, mag_comp: str):
             vals = line.split(",")
 
             diff = abs(float(vals[4]) - float(vals[5]))
+
+            if diff > tol:
+                raise ValueError(f"{file_path} doesn't matched with Test values. Expected {vals[5]} Got {vals[4]}")
             diff_sum += diff
+
 
             max_diff = max(max_diff, diff)
             min_diff = min(min_diff, diff)
@@ -32,22 +36,27 @@ def main():
 
     diff_res_folder = "results"
     diff_res_err_folder = "results_err"
+    tol = 0.06
 
 
-    out_file = "diff_results.csv"
+    out_filename = "diff_results.csv"
+    topdir = os.path.dirname(os.path.dirname(__file__))
+    out_path = os.path.join(topdir, "tests", out_filename)
+
+    print(out_path)
 
     mag_component = ["x","y","z","h","f","dec", "inc"]
 
     N = len(mag_component)
 
-    fp = open(out_file, "w")
+    fp = open(out_path, "w")
     fp.write("component,ave_diff,max_diff,min_diff\n")
 
     for i in range(N):
         file_path = f"{diff_res_folder}/{mag_component[i]}.csv"
 
         if os.path.exists(file_path):
-            estimate(file_path, fp, mag_component[i])
+            estimate(file_path, fp, mag_component[i], tol)
 
     magsv_component = ["dx", "dy", "dz", "dh", "df", "ddec", "dinc"]
 
@@ -55,7 +64,7 @@ def main():
         file_path = f"{diff_res_err_folder}/{mag_component[i]}.csv"
 
         if os.path.exists(file_path):
-            estimate(file_path, fp, magsv_component[i])
+            estimate(file_path, fp, magsv_component[i], tol)
 
 
     fp.close()

@@ -1,5 +1,8 @@
 from typing import Optional
 import os
+import numpy as np
+import warnings
+
 
 from wmm import wmm_calc
 from wmmhr import uncertainty
@@ -31,13 +34,15 @@ class wmmhr_calc(wmm_calc):
 
         return coef_file
 
-    def check_coords(self, lat: float, lon: float, alt: float):
+    def check_coords(self, lat: np.ndarray, lon: np.ndarray, alt: np.ndarray):
 
-        if lat > 90.0 or lat < -90.0:
-            raise ValueError("latitude should between -90 to 90")
+        if np.any(lat > 90.0) or np.any(lat < -90.0) or np.any(lon > 360.0) or np.any(lon < -180.0):
+            super().check_coords(lat, lon, alt)
+        if np.any(alt < -1) or np.any(alt > 1900):
+            link = "\033[94mhttps://www.ncei.noaa.gov/products/world-magnetic-model/accuracy-limitations-error-model\033[0m" #Blue color
+            warnings.warn(
+                f"Warning: WMMHR will not meet MilSpec at this altitude. For more information see {link}")
 
-        if lon > 360.0 or lon < -180.0:
-            raise ValueError("lontitude should between -180 to 180")
 
 
 
