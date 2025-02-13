@@ -15,10 +15,6 @@ class Test_wmmhr(unittest.TestCase):
 
     def setUp(self):
 
-        self.lat = np.array([23.35, 24.5])
-        self.lon = np.array([40, 45])
-        self.alt = np.ones(len(self.lat)) * 21
-
         self.year = np.array([2025, 2026]).astype(int)
         self.month = np.array([12, 1]).astype(int)
         self.day = np.array([6, 15]).astype(int)
@@ -98,7 +94,7 @@ class Test_wmmhr(unittest.TestCase):
         months = np.array([10, 11]).astype(int)
         days = np.array([1, 2]).astype(int)
 
-        model.setup_env(self.lat, self.lon, self.alt)
+        model.setup_env(self.lats, self.lons, self.alts)
         model.setup_time(years, months, days)
 
         dyears = [2025.7479452054795, 2026.835616438356]
@@ -114,7 +110,7 @@ class Test_wmmhr(unittest.TestCase):
 
         model.setup_time()
 
-        model.setup_env(self.lat, self.lon, self.alt)
+        model.setup_env(self.lats, self.lons, self.alts)
 
         model.get_all()
         curr_time = dt.datetime.now()
@@ -174,11 +170,11 @@ class Test_wmmhr(unittest.TestCase):
     def test_to_km(self):
 
         wmm_model = wmmhr_calc()
-        wmm_model.setup_env(self.lat, self.lon, self.alt, msl=False, unit="m")
+        wmm_model.setup_env(self.lats, self.lons, self.alts, msl=False, unit="m")
         wmm_model.setup_time(2025, 1, 1)
 
-        for i in range(len(self.alt)):
-            self.assertAlmostEqual(self.alt[i] * 1000, wmm_model.alt[i], places=6)
+        for i in range(len(self.alts)):
+            self.assertAlmostEqual(self.alts[i] * 1000, wmm_model.alt[i], places=6)
 
     def test_forward_base(self):
 
@@ -276,59 +272,62 @@ class Test_wmmhr(unittest.TestCase):
 
     def test_correct_time(self):
 
-        user_time = np.array([2030.0])
+        user_time = np.array([2024.5, 2030.0])
 
         wmm_model = wmmhr_calc()
+        get_err = 0
 
-        try:
-            wmm_model.setup_time(dyear=user_time)
-        except ValueError as e:
-            self.assertEqual(str(e), "Invalid year. Please provide date from [2024]-[11]-[13] to [2030]-[01]-[01] 00:00")
+        for i in range(2):
+            try:
+                wmm_model.setup_time(dyear=user_time)
+            except ValueError as e:
+                self.assertEqual(str(e), "Invalid year. Please provide date from [2024]-[11]-[13] to [2030]-[01]-[01] 00:00")
+                get_err += 1
 
-    def test_check_altitude(self):
+        self.assertEqual(get_err, 2)
 
-        user_time = np.array([2025.1])
 
-        lat = np.array([-18])
-        lon = np.array([138])
-        alt = np.array([3000])
-
-        wmm_model = wmmhr_calc()
-
-        wmm_model.setup_time(dyear=user_time)
-        wmm_model.setup_env(lat, lon, alt, msl=False)
 
 
     def test_check_latitude(self):
 
         user_time = np.array([2025.1])
-        lat, lon, alt = 90.1, 190, 700
+        lon, alt = 190, 700
+        lat = [-90.9, 90.1]
 
         wmm_model = wmmhr_calc()
+        get_err = 0
 
-        try:
-            wmm_model.setup_time(dyear=user_time)
-            wmm_model.setup_env(lat, lon, alt, msl=False)
-        except ValueError as e:
-            self.assertEqual(str(e), "latitude should between -90 to 90")
+        for i in range(2):
+            try:
+                wmm_model.setup_time(dyear=user_time)
+                wmm_model.setup_env(lat[i], lon, alt, msl=False)
+            except ValueError as e:
+                self.assertEqual(str(e), "latitude should between -90 to 90")
+                get_err += 1
 
+        self.assertEqual(get_err, 2)
 
     def test_check_longtitude(self):
 
         user_time = np.array([2025.1])
 
         lat = np.array([-18])
-        lon = np.array([190])
+        lon = np.array([-180.1, 360.1])
         alt = np.array([100])
 
         wmm_model = wmmhr_calc()
+        get_err = 0
 
-        try:
-            wmm_model.setup_time(dyear=user_time)
-            wmm_model.setup_env(lat, lon, alt, msl=False)
-        except ValueError as e:
+        for i in range(2):
+            try:
+                wmm_model.setup_time(dyear=user_time)
+                wmm_model.setup_env(lat, lon, alt, msl=False)
+            except ValueError as e:
+                self.assertEqual(str(e), "lontitude should between -180 to 360")
+                get_err += 1
 
-            self.assertEqual(str(e), "lontitude should between -180 to 180")
+        self.assertEqual(get_err, 2)
 
     @unittest.expectedFailure
     def test_not_setup_env(self):
@@ -344,14 +343,19 @@ class Test_wmmhr(unittest.TestCase):
 
         lat = np.array([-18])
         lon = np.array([138])
-        alt = np.array([3000])
+        alt = np.array([3000, -2])
         link = "\033[94mhttps://www.ncei.noaa.gov/products/world-magnetic-model/accuracy-limitations-error-model\033[0m" #Blue color
 
         wmm_model = wmmhr_calc()
-        wmm_model.setup_env(lat, lon, alt)
         with self.assertWarns(UserWarning) as w:
-            wmm_model.setup_env(lat, lon, alt)
+            wmm_model.setup_env(lat, lon, alt[0])
         self.assertEqual(str(w.warning), f"Warning: WMMHR will not meet MilSpec at this altitude. For more information see {link}" )
+
+        wmm_model = wmmhr_calc()
+        with self.assertWarns(UserWarning) as w:
+            wmm_model.setup_env(lat, lon, alt[1])
+        self.assertEqual(str(w.warning),
+                         f"Warning: WMMHR will not meet MilSpec at this altitude. For more information see {link}")
 
 
     def test_get_uncertainty(self):

@@ -10,4 +10,4 @@ wmmhr.egg-info/
 wmmhr/__pycache__/
 
 dist
-
+wmmhr/coefs/.DS_Store
