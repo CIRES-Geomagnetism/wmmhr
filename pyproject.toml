@@ -14,9 +14,9 @@ classifiers = [
     "Operating System :: OS Independent",
 ]
 dependencies = [
-    "numpy",
-    "geomaglib",  # Git dependency
-    "wmm_calculator"
+    "numpy>=2.0.2",
+    "geomaglib>=1.1.2",  # Git dependency
+    "wmm-calculator>=1.3.4"
 
 ]
 readme = "README.md"
