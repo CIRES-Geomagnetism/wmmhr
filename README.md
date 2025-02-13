@@ -1,21 +1,37 @@
 ## Create the environment for developing WMMHR Python module
 
 This is a Python implementation of the latest World Magnetic Model High Resolution(WMMHR) by the Cooperative Institute For Research in Environmental Sciences (CIRES), University of Colorado. The software computes all the geomagnetic field components from the WMM model for a specific date and location. 
-For more information about the WMMHR model, please visit [WMM](https://www.ncei.noaa.gov/products/world-magnetic-model)
+
+**For more information about the WMMHR model, please visit [WMMHR](https://www.ncei.noaa.gov/products/world-magnetic-model-high-resolution)**
+
+## Installation
+
+The recommended way to install wmmhr is via [pip](https://pip.pypa.io/en/stable/)
+
+```
+pip install wmmhr 
+```
 
 
 ## WMMHR Python API Quick Start
 
-Set up the time and latitude and longtitude and altitude for the WMMHR model
+WARNING: Input arrays of length 50,000 datapoints require ~16GB of memory.
+Users may input scalars, vectors, and combinations thereof. However, all input vectors must have the same length. 
 
 ```python
 from wmmhr import wmmhr_calc
-
 model = wmmhr_calc()
-lat, lon, alt = 23.35, 40, 21.0
+lat = [23.35, 24.5]
+lon = [40, 45]
+alt = [21, 21]
 
-model.setup_time(2025, 1, 1)
+year = [2025, 2026]
+month = [12, 1]
+day = [6, 15]
 
+# set up time
+model.setup_time(year, month, day)
+# set up the coordinates
 model.setup_env(lat, lon, alt)
 ```
 
@@ -27,19 +43,34 @@ mag_map = model.get_all()
 It will return 
 
 ```python
-{'x': 33819.7801070038, 'y': 2174.3912147114625, 'z': 23828.47071514917, 'h': 33889.60760529257, 'f': 41428.26957843431, 'dec': 3.6786815949671756, 'inc': 35.11183058537514, 
-  'dx': 9.741359695584915, 'dy': -3.0866861263666308, 'dz': 39.29435224005461, 'dh': 9.523243332028592, 'df': 30.391404567147962, 'ddec': -0.3758682095492924, 'dinc': 2.2128026143134507}
+{'x': array([33828.95752178, 33505.44405357]), 'y': array([2171.53955086, 1932.26765383]), 'z': array([23865.06803054, 26184.61762661]), 'h': array([33898.58331894, 33561.1149921 ]), 'f': array([41456.66922383, 42567.38939334]), 'dec': array([3.67287636, 3.3006066 ]), 'inc': array([35.14607142, 37.96160489]), 'dx': array([ 9.74138229, 14.15269211]), 'dy': array([-3.08678058, -4.24326699]), 'dz': array([39.2944816 , 33.10674659]), 'dh': array([ 9.52363521, 13.88491134]), 'df': array([30.40773033, 31.3122469 ]), 'ddec': array([-0.37568054, -0.51739277]), 'dinc': array([2.20977032, 1.41823256])}
 ```
 
 ### Get the uncertainty value of geomagnetic elements
 
 ```python
-import wmmhr
-print(wmmhr.uncertainty)
+from wmmhr import wmmhr_calc
+
+model = wmmhr_calc()
+
+lat = [23.35, 24.5]
+lon = [40, 45]
+alt = [21, 21]
+
+year = [2025, 2026]
+month = [12, 1]
+day = [6, 15]
+
+# set up time
+model.setup_time(year, month, day)
+# set up the coordinates
+model.setup_env(lat, lon, alt)
+# get the uncertainty value
+print(model.get_uncertainty())
 ```
 
 ```python
-{'X': 134, 'Y': 85, 'Z': 133, 'F': 133, 'H': 130, 'I': 0.19, 'D_OFFSET': 0.25, 'D_COEF': 5199}
+{'x_uncertainty': 135, 'y_uncertainty': 85, 'z_uncertainty': 134, 'h_uncertainty': 130, 'f_uncertainty': 134, 'declination_uncertainty': array([7.37493947e-06, 7.44909697e-06]), 'inclination_uncertainty': 0.19}
 ```
 
 ### Description of the components
@@ -78,11 +109,12 @@ model.setup_time(2024, 12, 30)
 ```
 or 
 ```python
+from wmmhr import wmmhr_calc
 model = wmmhr_calc()
 model.setup_time(dyear=2025.1)
 ```
 
-User allow to assign the date from "2024-12-17" to "2030-01-01"
+User allow to assign the date from "2024-11-13" to "2030-01-01"
 
 #### Set up the coordinates
 
@@ -98,14 +130,24 @@ The default unit and type of altitude is km and mean sea level.
 Assign the parameter for unit and msl, if the latitude is not in km or ellipsoid height.
 "m" for meter and "feet" for feet. For example,
 ```
+from wmmhr import wmmhr_calc
+model = wmmhr_calc()
 model.setup_env(lat, lon, alt, unit="m", msl=True)
 ```
 
 #### Get the geomagnetic elements
 
+**get_all()**
+
 After setting up the time and coordinates for the WMMHR model, you can get all the geomagnetic elements by
 
-```
+```python
+from wmmhr import wmmhr_calc
+model = wmmhr_calc()
+lat, lon, alt = 50.3, 100.4, 0
+year, month, day = 2025, 3, 30
+model.setup_env(lat, lon, alt, unit="m", msl=True)
+model.setup_time(year, month, day)
 mag_map = model.get_all()
 ```
 
@@ -130,6 +172,14 @@ or get single magnetic elements by calling
 
 for example,
 ```python
+from wmmhr import wmmhr_calc
+model = wmmhr_calc()
+from wmmhr import wmmhr_calc
+model = wmmhr_calc()
+lat, lon, alt = 50.3, 100.4, 0
+year, month, day = 2025, 3, 30
+model.setup_env(lat, lon, alt, unit="m", msl=True)
+model.setup_time(year, month, day)
 Bh = model.get_Bh()
 ```
 
