@@ -72,6 +72,8 @@ class Test_wmmhr(unittest.TestCase):
         model = wmmhr_calc()
         path = model.get_coefs_path("WMMHR.COF")
 
+
+
         self.assertTrue(os.path.exists(path))
 
     def test_setup_dtime_arr(self):
