@@ -22,7 +22,7 @@ class Test_wmmhr(unittest.TestCase):
         self.dyears = np.array([2025.5, 2026.6])
 
         self.top_dir = os.path.dirname(os.path.dirname(__file__))
-        self.wmm_file = os.path.join(self.top_dir, "wmm", "coefs", "WMMHR.cof")
+        self.wmm_file = os.path.join(self.top_dir, "wmm", "coefs", "WMMHR.COF")
         self.wmmhr_testval = os.path.join(self.top_dir, "tests", "WMMHR2025_TEST_VALUE_TABLE_FOR_REPORT.txt")
         self.get_wmmhr_testval()
 
@@ -70,7 +70,7 @@ class Test_wmmhr(unittest.TestCase):
     def test_get_coefs_path(self):
 
         model = wmmhr_calc()
-        path = model.get_coefs_path("WMMHR.cof")
+        path = model.get_coefs_path("WMMHR.COF")
 
         self.assertTrue(os.path.exists(path))
 
@@ -237,8 +237,8 @@ class Test_wmmhr(unittest.TestCase):
 
 
         for i in range(len(self.dBdec)):
-            self.assertAlmostEqual(map["ddec"][i] / 60, self.dBdec[i], delta=0.05)
-            self.assertAlmostEqual(map["dinc"][i] / 60, self.dBinc[i], delta=0.05)
+            self.assertAlmostEqual(map["ddec"][i] , self.dBdec[i], delta=0.05)
+            self.assertAlmostEqual(map["dinc"][i], self.dBinc[i], delta=0.05)
 
     def test_reset_env(self):
         lat = np.array([-18])
@@ -370,6 +370,26 @@ class Test_wmmhr(unittest.TestCase):
         model.setup_time(dyear=user_time)
         model.setup_env(lat, lon, alt)
 
+        print(model.get_uncertainty())
+
+    def test_readme_inputs(self):
+
+        model = wmmhr_calc()
+        lat = [23.35, 24.5]
+        lon = [40, 45]
+        alt = [21, 21]
+
+
+
+        year = [2025, 2026]
+        month = [12, 1]
+        day = [6, 15]
+
+        model.setup_time(year, month, day)
+
+        model.setup_env(lat, lon, alt)
+
+        print(model.get_all())
         print(model.get_uncertainty())
 
 

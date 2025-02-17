@@ -15,7 +15,7 @@ class wmmhr_calc(wmm_calc):
         super().__init__()
         self.nmax = 133
         self.max_sv = 15
-        self.coef_file = "WMMHR.cof"
+        self.coef_file = "WMMHR.COF"
         self.err_vals = uncertainty.err_models
 
 
