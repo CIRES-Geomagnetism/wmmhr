@@ -22,7 +22,7 @@ class Test_wmmhr(unittest.TestCase):
         self.dyears = np.array([2025.5, 2026.6])
 
         self.top_dir = os.path.dirname(os.path.dirname(__file__))
-        self.wmm_file = os.path.join(self.top_dir, "wmm", "coefs", "WMMHR.COF")
+        self.wmm_file = os.path.join(self.top_dir, "wmmhr", "coefs", "WMMHR.COF")
         self.wmmhr_testval = os.path.join(self.top_dir, "tests", "WMMHR2025_TEST_VALUE_TABLE_FOR_REPORT.txt")
         self.get_wmmhr_testval()
 
