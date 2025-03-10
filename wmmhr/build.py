@@ -6,14 +6,16 @@ import warnings
 
 from wmm import wmm_calc
 from wmmhr import uncertainty
+from geomaglib import sh_loader
 
 class wmmhr_calc(wmm_calc):
 
-    def __init__(self):
+    def __init__(self, nmax: int=133):
 
 
         super().__init__()
-        self.nmax = 133
+        self.max_degree = 133
+        self.nmax = self.setup_max_degree(nmax)
         self.max_sv = 15
         self.coef_file = "WMMHR.COF"
         self.err_vals = uncertainty.err_models
@@ -33,6 +35,7 @@ class wmmhr_calc(wmm_calc):
 
 
         return coef_file
+
 
     def check_coords(self, lat: np.ndarray, lon: np.ndarray, alt: np.ndarray):
 
