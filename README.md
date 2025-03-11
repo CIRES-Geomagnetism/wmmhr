@@ -8,9 +8,9 @@
 This is a Python implementation of the latest World Magnetic Model High Resolution(WMMHR) by the Cooperative Institute For Research in Environmental Sciences (CIRES), University of Colorado. The software computes all the geomagnetic field components from the WMM model for a specific date and location. 
 The World Magnetic Model High Resolution (WMMHR) is an advanced geomagnetic field model that provides a more detailed, accurate depiction of the geomagnetic field than the World Magnetic Model ([WMM](https://www.ncei.noaa.gov/products/world-magnetic-model)). 
 
-WMMHR2025 includes core field and secular variation coefficients for degrees n = 1 to 15. This model also covers the crustal field (from n=16 through n=133).  As a result, it has more coefficients ((18,210 non-zero coefficients instead of 336) and more digits (4 instead of 1) in each coefficient.
+WMMHR2025 includes core field and secular variation coefficients for degrees n = 1 to 15. This model also covers the crustal field (from n=16 through n=133).  As a result, it has more coefficients (18,210 non-zero coefficients instead of 336) and more digits (4 instead of 1) in each coefficient.
 
-**For more information about the WMMHR model, please visit [WMMHR](https://www.ncei.noaa.gov/products/world-magnetic-model-high-resolution)**
+**For more information about the WMMHR model, please visit [WMMHR](https://www.ncei.noaa.gov/products/world-magnetic-model-high-resolution)** website.
 
 ## Table of contents
 - [Installation](#installation)
@@ -58,12 +58,12 @@ pip install wmmhr
 ```
 ## Outputs
 
-It will output the magnetic components and uncertainty value. To get the detail of the outputs, please see **[Description of the WMM magnetic components](https://github.com/CIRES-Geomagnetism/wmm/blob/check_nmax/description.md)**
+It will output the magnetic components and uncertainty values. To get the detail of the outputs, please see **[Description of the WMM magnetic components](https://github.com/CIRES-Geomagnetism/wmm/blob/check_nmax/description.md)**
 
 
 ## WMMHR Python API Quick Start
 
-WARNING: Input arrays of length 50,000 datapoints require ~16GB of memory.
+**WARNING:** Input arrays of length 50,000 datapoints require ~16GB of memory.
 Users may input scalars, vectors, and combinations thereof. However, all input vectors must have the same length. 
 
 ```python
@@ -83,7 +83,7 @@ model.setup_time(year, month, day)
 model.setup_env(lat, lon, alt)
 ```
 
-Get all of the geomagnetic elements
+Get all the geomagnetic elements
 
 ```python
 mag_map = model.get_all()
@@ -100,7 +100,7 @@ It will return
 
 **wmmhr_calc(nmax=133)**
 
-The default maximum degree for WMM is 133. Users allow to assign the max degree from 1 to 133 to WMM Python API.
+The default maximum degree for WMMHR is 133. Users allow to assign the max degree from 1 to 133 to WMMHR Python API.
 ```python
 from wmm import wmm_calc
 model = wmm_calc(nmax=100)
@@ -110,8 +110,11 @@ model = wmm_calc(nmax=100)
 
 **setup_time(year**=None, **month**=None, **day**=None, **dyear** = None)
 
-If users don't call or assign any value to setup_time(), the current time will be used to compute the model.
-Either by providing year, month, day or decimal year.
+
+User can set up the time either by providing year, month, day or decimal year.
+If users don't call or assign any value to `setup_time()`, the current time will be used to compute the model.
+
+For example, 
 ```python
 from wmmhr import wmmhr_calc
 model = wmmhr_calc()
@@ -136,10 +139,12 @@ lat, lon, alt = 50.3, 100.4, 0
 model.setup_env(lat, lon, alt, unit="m")
 ```
 
-The default unit and type of altitude is km and mean sea level. 
+The default unit and type of altitude is kilometer(km) and mean sea level. 
 Assign the parameter for unit and msl, if the latitude is not in km or ellipsoid height.
-"m" for meter and "feet" for feet. For example,
-```
+`m` for meter and `feet` for feet. 
+
+For example,
+```python
 from wmmhr import wmmhr_calc
 model = wmmhr_calc()
 model.setup_env(lat, lon, alt, unit="m", msl=True)
@@ -228,9 +233,19 @@ Bh = model.get_Bh()
 
 **wmmhr_calc.get_uncertainty()**
 
-The WMM Python API includes an error model that providesing uncertainty estimates for every geomagnetic element (X, Y, Z, H, F, I and D) and every location at Earth's surface. 
+The WMMHR Python API includes an error model that providing uncertainty estimates for every geomagnetic element (X, Y, Z, H, F, I and D) and every location at Earth's surface. 
+<details>
+<summary>Click here to see the description of the outputs for <b>wmmhr_calc.get_uncertainty()</b></summary>
+<li><b>x_uncertainty: </b> WMMHR 1-sigma uncertainty in the northward component of the Earth's magnetic field, measured in nanoteslas (nT)</li>
+<li><b>y_uncertainty: </b>WMMHR 1-sigma uncertainty in the eastward component of the Earth's magnetic field, measured in nanoteslas (nT)</li>
+<li><b>z_uncertainty: </b>WMMHR 1-sigma uncertainty in the downward component of the Earth's magnetic field, measured in nanoteslas (nT)</li>
+<li><b>h_uncertainty: </b>WMMHR 1-sigma uncertainty in the horizontal intensity of the Earth's magnetic field, measured in nanoteslas (nT)</li>
+<li><b>f_uncertainty: </b>WMMHR 1-sigma uncertainty in the total intensity of the Earth's magnetic field, measured in nanoteslas (nT)</li>
+<li><b>dec_uncertainty: </b>WMMHR 1-sigma uncertainty in the declination, measured in degrees.</li>
+<li><b>inc_uncertainty: </b>WMMHR 1-sigma uncertainty in the inclination, measured in degrees.</li>
+</details>
 
-For more infromation about the error model, please visit [World Magnetic Model Accuracy, Limitations, and Error Model](https://www.ncei.noaa.gov/products/world-magnetic-model/accuracy-limitations-error-model)
+For more information about the error model, please visit [World Magnetic Model Accuracy, Limitations, and Error Model](https://www.ncei.noaa.gov/products/world-magnetic-model/accuracy-limitations-error-model)
 
 ```python
 from wmmhr import wmmhr_calc
