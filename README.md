@@ -4,6 +4,8 @@
 ![PyPI - License](https://img.shields.io/pypi/l/wmmhr)
 ![PyPI - Python Version](https://img.shields.io/pypi/pyversions/wmmhr)
 ![PyPI - Downloads](https://img.shields.io/pypi/dm/wmmhr)
+[![PyPI Downloads](https://static.pepy.tech/badge/wmmhr)](https://pepy.tech/projects/wmmhr)
+
 
 This is a Python implementation of the latest World Magnetic Model High Resolution(WMMHR) by the Cooperative Institute For Research in Environmental Sciences (CIRES), University of Colorado. The software computes all the geomagnetic field components from the WMM model for a specific date and location. 
 The World Magnetic Model High Resolution (WMMHR) is an advanced geomagnetic field model that provides a more detailed, accurate depiction of the geomagnetic field than the World Magnetic Model ([WMM](https://www.ncei.noaa.gov/products/world-magnetic-model)). 
