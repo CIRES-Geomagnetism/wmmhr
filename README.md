@@ -3,7 +3,7 @@
 ![PyPI - Version](https://img.shields.io/pypi/v/wmmhr)
 ![PyPI - License](https://img.shields.io/pypi/l/wmmhr)
 ![PyPI - Python Version](https://img.shields.io/pypi/pyversions/wmmhr)
-![PyPI - Downloads](https://img.shields.io/pypi/dm/wmmhr)
+[![PyPI Downloads](https://static.pepy.tech/badge/wmmhr/month)](https://pepy.tech/projects/wmmhr)
 [![PyPI Downloads](https://static.pepy.tech/badge/wmmhr)](https://pepy.tech/projects/wmmhr)
 
 

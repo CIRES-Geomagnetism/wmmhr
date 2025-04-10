@@ -16,8 +16,8 @@ classifiers = [
     "Operating System :: OS Independent",
 ]
 dependencies = [
-    "numpy>=2.0.2",
-    "geomaglib>=1.1.5",
+    "numpy",
+    "geomaglib>=1.2.1",
     "wmm-calculator>=1.4.1"
 
 ]
