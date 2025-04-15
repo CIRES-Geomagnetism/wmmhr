@@ -18,7 +18,7 @@ classifiers = [
 dependencies = [
     "numpy",
     "geomaglib>=1.2.1",
-    "wmm-calculator>=1.4.1"
+    "wmm-calculator>=1.4.2"
 
 ]
 readme = "README.md"
