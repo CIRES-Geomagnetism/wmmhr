@@ -216,7 +216,7 @@ class Test_wmmhr(unittest.TestCase):
         wmm_model.setup_time(2025, 1, 1)
 
         for i in range(len(self.alts)):
-            self.assertAlmostEqual(self.alts[i] * 1000, wmm_model.alt[i], places=6)
+            self.assertAlmostEqual(self.alts[i]/1000, wmm_model.alt[i], places=6)
 
     def test_forward_base(self):
 

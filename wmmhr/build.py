@@ -1,4 +1,3 @@
-from typing import Optional
 import os
 import numpy as np
 import warnings
@@ -6,7 +5,6 @@ import warnings
 
 from wmm import wmm_calc
 from wmmhr import uncertainty
-from geomaglib import sh_loader
 
 class wmmhr_calc(wmm_calc):
 
